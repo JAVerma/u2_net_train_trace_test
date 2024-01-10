@@ -30,7 +30,7 @@ class SalObjDataset(Dataset):
             label = cv2.cvtColor(label, cv2.COLOR_BGR2GRAY)
             h,w,_=image.shape
         else:
-            image = cv2.imread('/home/spyne-4090/members/shreyank/Transparent_shadow/data_2/data/trainA/0a0ce839-d117-4062-b455-d91544112ab7.png')
+            image = cv2.imread(self.image_name_list[idx-1])
             # image = Image.fromarray(image)
             # bg = Image.new("RGB", image.size)
             # bg.paste(image, (0,0), image)
@@ -38,7 +38,7 @@ class SalObjDataset(Dataset):
             # image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             # label = 255 - cv2.imread(self.label_name_list[idx], cv2.IMREAD_GRAYSCALE)
-            label=cv2.imread('/home/spyne-4090/members/shreyank/Transparent_shadow/data_2/data/trainB/0a0ce839-d117-4062-b455-d91544112ab7.png')
+            label=cv2.imread(self.image_name_list[idx-1])
             label = np.array(label)
             label = cv2.cvtColor(label, cv2.COLOR_BGR2GRAY)
             print('no mask')

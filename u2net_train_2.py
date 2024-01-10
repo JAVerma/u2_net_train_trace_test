@@ -43,14 +43,14 @@ def muti_bce_loss_fusion(d0, d1, d2, d3, d4, d5, d6, labels_v):
 
 model_name = 'u2net'  # 'u2netp'
 
-data_dir = "/home/spyne-4090/members/shreyank/Transparent_shadow/data_2/data"
+data_dir = ""
 tra_image_dir = os.path.join(data_dir, "trainA/")
 tra_label_dir = os.path.join(data_dir, "trainB/")
 # print(tra_image_dir,"/home/ai-team/Desktop/transparent_shadow/curve_data/train_A")
 image_ext = '.png'
 label_ext = '.png'
 
-model_dir = os.path.join(os.getcwd(), 'saved_models_dark_shadow', model_name + os.sep)
+model_dir = os.path.join(os.getcwd(), 'saved_models_u2', model_name + os.sep)
 os.makedirs(model_dir, exist_ok=True)
 
 epoch_num = 150
@@ -189,7 +189,7 @@ for epoch in range(epoch_start, epoch_num):
         del d0, d1, d2, d3, d4, d5, d6, loss2, loss
 
     if epoch % save_frq == 0:
-        save_file = model_name + f"_bce_itr_{ite_num}_train_shreyank_{running_loss.item() / ite_num4val}_tar_{running_tar_loss.item() / ite_num4val}.pth"
+        save_file = model_name + f"_bce_itr_{ite_num}_train_u2net_{running_loss.item() / ite_num4val}_tar_{running_tar_loss.item() / ite_num4val}.pth"
         print(f"Saving model to {save_file}")
         torch.save(net.state_dict(), model_dir + save_file)
         running_loss = 0.0
