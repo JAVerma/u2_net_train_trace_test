@@ -17,7 +17,7 @@ net.cuda()
 net.eval()
 
 
-transparent_image = cv2.imread("/home/ubuntu/U-2-Net/avik.png", cv2.IMREAD_UNCHANGED)
+transparent_image = cv2.imread("/home/ubuntu/U-2-Net/jayant.png", cv2.IMREAD_UNCHANGED)
 # transparent_image = cv2.cvtColor(transparent_image, cv2.COLOR_BGR2GRAY)
 # transparent_image = cv2.cvtColor(transparent_image, cv2.COLOR_GRAY2RGB)
 
@@ -36,7 +36,7 @@ data = torch.from_numpy(np.array(transparent_image)).to('cuda')[None]
 print(data.shape)
 
 
-class WrappedModel(torch.nn.Module):
+class WrappedModel(torch.nn.Module):  #forward depend upon transformation done in training
     def __init__(self, model):
         super().__init__()
         self.model = model
@@ -44,7 +44,7 @@ class WrappedModel(torch.nn.Module):
     @torch.inference_mode()
     def forward(self, data, fp16=True):
         with amp.autocast(enabled=fp16):
-            print(data.shape)
+            # print(data.shape)
             data = data.permute(0, 3, 1, 2).contiguous()
             data = data.contiguous()
             data = data.div(127.5).sub_(1.0)
@@ -78,20 +78,3 @@ with torch.no_grad():
 o = o[0].cpu().numpy()
 
 
-raw = Image.open("/home/ubuntu/U-2-Net/avik.png")
-w1, h1 = raw.size
-shadow = Image.new('RGB', (w1, h1))
-white = Image.new('RGB', (w1, h1), (255, 255, 255))
-
-o = cv2.resize(o, (w1, h1))
-o = cv2.cvtColor(o, cv2.COLOR_GRAY2RGB)
-cv2.imwrite('shadow_out.png',o)
-# o = cv2.cvtColor(o, cv2.COLOR_GRAY2RGB)
-o = Image.fromarray(o)
-o, _, _ = o.split()
-o.save('mask.png')
-white.paste(shadow, (0, 0), o)
-white.paste(raw, (0, 0), raw)
-print(np.array(raw).shape, w1, h1, '#####################3')
-white.save("postrace.png")
-# cv2.imwrite("postrace.png",white)
